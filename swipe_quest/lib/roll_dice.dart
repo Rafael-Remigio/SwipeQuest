@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:sensors_plus/sensors_plus.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'dart:math';
 
 void main() => runApp(RollDice());
@@ -26,6 +27,7 @@ class RPGDiceRollerPage extends StatefulWidget {
 
 class _RPGDiceRollerPageState extends State<RPGDiceRollerPage> {
   int diceValue = 1;
+  int soundEffect = 0;
   bool isRolling = false;
   late StreamSubscription<AccelerometerEvent> _streamSubscription;
   List<int> diceTypes = [4, 6, 8, 10, 12, 20];
@@ -60,8 +62,24 @@ class _RPGDiceRollerPageState extends State<RPGDiceRollerPage> {
     _streamSubscription.cancel();
   }
 
+  void playRandomSoundEffect() {
+    final player = AudioCache();
+    switch (Random().nextInt(3) + 1) {
+      case 1:
+        player.play('audio/diceSoundEffect1.mp3');
+        break;
+      case 2:
+        player.play('audio/diceSoundEffect2.mp3');
+        break;
+      case 3:
+        player.play('audio/diceSoundEffect3.mp3');
+        break;
+    }
+  }
+
   Future<void> rollDice() async {
-    await Future.delayed(Duration(seconds: 1));
+    playRandomSoundEffect();
+    await Future.delayed(const Duration(seconds: 1));
     setState(() {
       diceValue = Random().nextInt(selectedDiceType) + 1;
       isRolling = false;
@@ -101,8 +119,12 @@ class _RPGDiceRollerPageState extends State<RPGDiceRollerPage> {
                     'Dice Value: $diceValue',
                     style: TextStyle(fontSize: 24),
                   ),
+          ElevatedButton(child: Text("Teste"),
+            onPressed: () {playRandomSoundEffect();},
+          ),
           ],
         ),
+
       ),
     );
   }
