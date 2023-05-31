@@ -119,9 +119,6 @@ class _RPGDiceRollerPageState extends State<RPGDiceRollerPage> {
                     'Dice Value: $diceValue',
                     style: TextStyle(fontSize: 24),
                   ),
-          ElevatedButton(child: Text("Teste"),
-            onPressed: () {playRandomSoundEffect();},
-          ),
           ],
         ),
 
