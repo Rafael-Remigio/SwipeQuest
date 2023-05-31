@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'dart:math';
 
+import 'package:swipe_quest/pages/qrcode_cam.dart';
+
 void main() => runApp(RollDice());
 
 class RollDice extends StatelessWidget {
@@ -101,6 +103,16 @@ class _RPGDiceRollerPageState extends State<RPGDiceRollerPage> {
                     'Dice Value: $diceValue',
                     style: TextStyle(fontSize: 24),
                   ),
+            ElevatedButton(
+              child: Text("Go to camera"),
+              onPressed: () => {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const CameraQrCode(),
+                  ),
+                )
+              },
+            )
           ],
         ),
       ),
