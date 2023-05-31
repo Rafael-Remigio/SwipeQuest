@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:swipe_quest/home_page.dart';
+import 'package:swipe_quest/roll_dice.dart';
 
-import './home_page.dart';
+import 'roll_dice.dart';
 
 void main() {
   //runApp(const MyApp());
   runApp(MaterialApp(
-      home: HomePage(),
+      home: RollDice(),
     )
   );
 }
