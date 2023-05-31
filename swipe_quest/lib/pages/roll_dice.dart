@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:swipe_quest/pages/generate_qr_code.dart';
 import 'dart:math';
 
 import 'package:swipe_quest/pages/qrcode_cam.dart';
@@ -35,15 +36,23 @@ class _RPGDiceRollerPageState extends State<RPGDiceRollerPage> {
   List<int> diceTypes = [4, 6, 8, 10, 12, 20];
   int selectedDiceType = 6;
 
+  TextEditingController myController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
+    myController.addListener(_assignValues);
     startAccelerometer();
+  }
+
+  void _assignValues() {
+    print('Second text field: ${myController.text}');
   }
 
   @override
   void dispose() {
     stopAccelerometer();
+    myController.dispose();
     super.dispose();
   }
 
@@ -130,10 +139,24 @@ class _RPGDiceRollerPageState extends State<RPGDiceRollerPage> {
                   ),
                 )
               },
+            ),
+            TextField(
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Enter a search term'),
+                controller: myController),
+            ElevatedButton(
+              child: Text("Generate QR from text"),
+              onPressed: () => {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => QRImage(myController.text),
+                  ),
+                )
+              },
             )
           ],
         ),
-
       ),
     );
   }
