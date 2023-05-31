@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:swipe_quest/roll_dice.dart';
-
-import 'roll_dice.dart';
+import 'package:swipe_quest/pages/roll_dice.dart';
 
 void main() {
   //runApp(const MyApp());
   runApp(MaterialApp(
-      home: RollDice(),
-    )
-  );
+    home: RollDice(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
