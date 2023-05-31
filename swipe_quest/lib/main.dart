@@ -7,7 +7,7 @@ void main() {
     home: RollDice(),
   ));
 }
-
+/*
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -70,3 +70,4 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+*/
