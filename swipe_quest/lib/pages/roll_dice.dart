@@ -8,6 +8,8 @@ import 'dart:math';
 
 import 'package:swipe_quest/pages/qrcode_cam.dart';
 
+import 'dnd_documentation.dart';
+
 void main() => runApp(RollDice());
 
 class RollDice extends StatelessWidget {
@@ -151,6 +153,16 @@ class _RPGDiceRollerPageState extends State<RPGDiceRollerPage> {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => QRImage(myController.text),
+                  ),
+                )
+              },
+            ),
+            ElevatedButton(
+              child: Text("Documentation"),
+              onPressed: () => {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => Documentation(),
                   ),
                 )
               },

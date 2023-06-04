@@ -16,6 +16,7 @@ dependencies:
   sensors_plus: ^1.0.4
   audioplayers: ^0.20.1
   qr_flutter: ^4.1.0
+  font_awesome_flutter: ^10.4.0
 
 dev_dependencies:
   flutter_test:
