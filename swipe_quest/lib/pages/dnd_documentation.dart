@@ -1,9 +1,10 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'dart:convert' show utf8;
+import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:swipe_quest/pages/game_page.dart';
+import 'package:swipe_quest/pages/generate_qr_code.dart';
+import 'package:swipe_quest/pages/sheets_page.dart';
 
 Future<List<dynamic>> fetchRaces() async {
   String url = "https://www.dnd5eapi.co/api/races";
@@ -55,34 +56,96 @@ class Documentation extends StatefulWidget {
 class _DocumentationState extends State<Documentation> {
   PageController _pageController = PageController(initialPage: 0);
   int _currentIndex = 0;
+
+  _onItemTapped(int index) {
+    setState(() {
+      var page;
+
+      switch (index) {
+        case 0:
+          page = const Documentation();
+          break;
+        case 1:
+          page = GamePage();
+          break;
+        case 2:
+          page = SheetPage();
+          break;
+        case 3:
+          page = const QRImage("Here");
+          break;
+        default:
+      }
+
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => page,
+        ),
+      );
+    });
+  }
+
   final _bottomNavigationBar = [
-    BottomNavigationBarItem(icon: Icon(Icons.star), label: "classes"),
-    BottomNavigationBarItem(icon: Icon(Icons.home), label: "races")
+    BottomNavigationBarItem(
+        icon: SvgPicture.asset('assets/svg/menu - home_active.svg',
+            semanticsLabel: 'docs'),
+        label: ""),
+    BottomNavigationBarItem(
+        icon: SvgPicture.asset('assets/svg/menu - wallet.svg',
+            semanticsLabel: 'home'),
+        label: "D&D Docs"),
+    BottomNavigationBarItem(
+        icon: SvgPicture.asset('assets/svg/menu - analysis.svg',
+            semanticsLabel: 'sheet'),
+        label: "D&D Docs"),
+    BottomNavigationBarItem(
+        icon:
+            SvgPicture.asset('assets/svg/menu - qr.svg', semanticsLabel: 'qr'),
+        label: "D&D Docs")
   ];
+
+  final _dndBottomNavigationBar = [
+    BottomNavigationBarItem(
+        icon: SvgPicture.asset('assets/svg/helmet-svgrepo-com.svg',
+            semanticsLabel: 'Label'),
+        label: "classes"),
+    BottomNavigationBarItem(
+        icon: SvgPicture.asset('assets/svg/helmet-svgrepo-com.svg',
+            semanticsLabel: 'Label'),
+        label: "races")
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView(
-          controller: _pageController,
-          onPageChanged: (newIndex) {
-            setState(() {
-              _currentIndex = newIndex;
-            });
-          },
-          children: [ClassesPage(), RacesPage()]),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        items: _bottomNavigationBar,
-        onTap: (tappedIndex) {
-          setState(() {
-            _pageController.animateToPage(tappedIndex,
-                duration: Duration(milliseconds: 500),
-                curve: Curves.decelerate);
-          });
-        },
-        //type: BottomNavigationBarType.fixed,
-      ),
-    );
+        body: Scaffold(
+          body: PageView(
+              controller: _pageController,
+              onPageChanged: (newIndex) {
+                setState(() {
+                  _currentIndex = newIndex;
+                });
+              },
+              children: const [ClassesPage(), RacesPage()]),
+          bottomNavigationBar: BottomNavigationBar(
+            currentIndex: _currentIndex,
+            items: _dndBottomNavigationBar,
+            onTap: (tappedIndex) {
+              setState(() {
+                _pageController.animateToPage(tappedIndex,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.decelerate);
+              });
+            },
+            //type: BottomNavigationBarType.fixed,
+          ),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.black,
+          items: _bottomNavigationBar,
+          onTap: _onItemTapped,
+        ));
   }
 }
 
