@@ -5,6 +5,7 @@ class AppColors {
   static Color lighgrey = Color(0xFF686868);
   static Color red = Color(0xFFFE0009);
   static Color grey = Color(0xFF242424);
+  static Color lighBlue = Color(0xFF386bf6);
 }
 
 MaterialColor getMaterialColor(Color color) {
