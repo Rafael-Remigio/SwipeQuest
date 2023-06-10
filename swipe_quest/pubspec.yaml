@@ -17,11 +17,13 @@ dependencies:
   audioplayers: ^0.20.1
   qr_flutter: ^4.1.0
   font_awesome_flutter: ^10.4.0
+  google_maps_flutter: ^2.0.12
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-    
+
   flutter_lints: ^2.0.0
 
 flutter:
