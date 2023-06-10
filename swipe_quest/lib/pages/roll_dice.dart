@@ -10,8 +10,6 @@ import 'package:swipe_quest/pages/qrcode_cam.dart';
 
 import 'dnd_documentation.dart';
 
-void main() => runApp(RollDice());
-
 class RollDice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
