@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:swipe_quest/model/character.dart';
+import 'package:swipe_quest/model/rols.dart';
 import 'package:swipe_quest/pages/character_sheet.dart';
 import 'package:swipe_quest/pages/game_page.dart';
 import 'package:swipe_quest/pages/qrcode_cam.dart';
 import 'package:swipe_quest/components/app_colors.dart';
 import 'package:swipe_quest/provider/sheetBox.dart';
+import '../model/rolHistory.dart';
 import 'dnd_documentation.dart';
 import 'package:provider/provider.dart';
 
@@ -33,6 +35,9 @@ class _SheetPageState extends State<SheetPage> {
             SvgPicture.asset('assets/svg/menu - qr.svg', semanticsLabel: 'qr'),
         label: "")
   ];
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController systemController = TextEditingController();
 
   _onItemTapped(int index) {
     setState(() {
@@ -67,7 +72,7 @@ class _SheetPageState extends State<SheetPage> {
   List<Widget> _buildRowList(List sheetList) {
     List<Widget> columnList = [];
     int index = 0;
-    for (Map<String, String> i in sheetList) {
+    for (Character i in sheetList) {
       Color current = AppColors.listColors[index];
 
       columnList.add(Container(
@@ -82,11 +87,11 @@ class _SheetPageState extends State<SheetPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    i["name"]!,
+                    i.name,
                     style: const TextStyle(
                         fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                  Text(i["system"]!,
+                  Text(i.system,
                       style: const TextStyle(
                           fontSize: 10, fontWeight: FontWeight.normal)),
                 ],
@@ -101,90 +106,88 @@ class _SheetPageState extends State<SheetPage> {
     return columnList;
   }
 
-  final elements = <Map<String, String>>[
-    new Map.from({"name": "josé", "system": "dnd"}),
-    new Map.from({"name": "ohh Rui", "system": "tormenta"}),
-    new Map.from({"name": "ohh Rui", "system": "tormenta"}),
-    new Map.from({"name": "ohh Rui", "system": "tormenta"}),
-    new Map.from({"name": "ohh Rui", "system": "tormenta"}),
-    new Map.from({"name": "ohh Rui", "system": "tormenta"}),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final sheetBox = Provider.of<SheetBox>(context);
+
+    var elements = sheetBox.getAll();
+
     return Scaffold(
       backgroundColor: const Color.fromRGBO(0, 8, 30, 1),
-      body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(children: [
-                    const Image(image: AssetImage('assets/svg/Group.png')),
-                    Text(
-                      "SwipeQuest",
+      body: SingleChildScrollView(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(children: [
+                      const Image(image: AssetImage('assets/svg/Group.png')),
+                      Text(
+                        "SwipeQuest",
+                        style: TextStyle(
+                            color: AppColors.lighBlue,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold),
+                      )
+                    ]),
+                  )
+                ],
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 50.0),
+                child: Row(
+                  children: [
+                    const Expanded(
+                        child: Text(
+                      "Sheets",
                       style: TextStyle(
-                          color: AppColors.lighBlue,
-                          fontSize: 30,
+                          color: Colors.white,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold),
-                    )
-                  ]),
-                )
-              ],
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 50.0),
-              child: Row(
-                children: [
-                  const Expanded(
-                      child: Text(
-                    "Sheets",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  )),
-                  IconButton(
-                    icon: const Icon(Icons.add),
-                    color: Colors.white,
-                    onPressed: () => {_onAddCharacter()},
-                  ),
-                ],
+                    )),
+                    IconButton(
+                      icon: const Icon(Icons.add),
+                      color: Colors.white,
+                      onPressed: () => {_onAddCharacter()},
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 40),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                            decoration: const BoxDecoration(
-                                color: Color(0xFF1E1E1E),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20))),
-                            height: MediaQuery.of(context).size.height * 0.50,
-                            padding: const EdgeInsets.all(10.0),
-                            child: SingleChildScrollView(
-                              child: Column(
-                                children: _buildRowList(elements),
-                              ),
-                            )),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            )
-          ]),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10.0, horizontal: 40),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                              decoration: const BoxDecoration(
+                                  color: Color(0xFF1E1E1E),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20))),
+                              height: MediaQuery.of(context).size.height * 0.50,
+                              padding: const EdgeInsets.all(10.0),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  children: _buildRowList(elements),
+                                ),
+                              )),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              )
+            ]),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.black,
@@ -198,8 +201,6 @@ class _SheetPageState extends State<SheetPage> {
     showModalBottomSheet(
         context: context,
         builder: (context) {
-          TextEditingController nameController = TextEditingController();
-          TextEditingController systemController = TextEditingController();
           final sheetBox = Provider.of<SheetBox>(context);
 
           return Padding(
@@ -235,14 +236,18 @@ class _SheetPageState extends State<SheetPage> {
                           sheetBox.put(Character(
                               name: nameController.text,
                               system: systemController.text,
-                              rools: List.empty()));
+                              rools: List<Rols>.empty(growable: true),
+                              rolsHistory:
+                                  List<RolHistory>.empty(growable: true)));
+                          Navigator.of(context).pop();
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => CharacterPage(
-                                characterKey: "key_" + nameController.text,
+                                characterKey: "key_${nameController.text}",
                               ),
                             ),
                           );
+                          setState(() {});
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.lighBlue),

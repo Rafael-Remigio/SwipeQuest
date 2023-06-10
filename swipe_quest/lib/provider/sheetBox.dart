@@ -20,12 +20,18 @@ class SheetBox extends ChangeNotifier {
     return box.get(key);
   }
 
+  List<Character> getAll() {
+    return box.toMap().values.toList() as List<Character>;
+  }
+
   addDice(Character currentCharacter, Rols rol) {
     Character char = box.get("key_${currentCharacter.name}");
 
-    char.rools.add(rol);
+    List<Rols> rols = char.rools;
+    rols.add(rol);
+    char.rools = rols;
 
-    put(char);
+    box.put("key_${currentCharacter.name}", char);
   }
 
   updateNameAndSystem(Character currentCharacter, String name, String system) {

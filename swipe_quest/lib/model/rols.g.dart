@@ -1,41 +1,38 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'character.dart';
+part of 'rols.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class CharacterAdapter extends TypeAdapter<Character> {
+class RolsAdapter extends TypeAdapter<Rols> {
   @override
-  final int typeId = 0;
+  final int typeId = 3;
 
   @override
-  Character read(BinaryReader reader) {
+  Rols read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Character(
-      name: fields[0] as String,
-      system: fields[1] as String,
-      rools: (fields[3] as List).cast<Rols>(),
-      rolsHistory: (fields[4] as List).cast<RolHistory>(),
+    return Rols(
+      fields[0] as String,
+      fields[1] as int,
+      (fields[2] as Map).cast<Die, int>(),
     );
   }
 
   @override
-  void write(BinaryWriter writer, Character obj) {
+  void write(BinaryWriter writer, Rols obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
-      ..write(obj.system)
-      ..writeByte(3)
-      ..write(obj.rools)
-      ..writeByte(4)
-      ..write(obj.rolsHistory);
+      ..write(obj.advantage)
+      ..writeByte(2)
+      ..write(obj.dice);
   }
 
   @override
@@ -44,7 +41,7 @@ class CharacterAdapter extends TypeAdapter<Character> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is CharacterAdapter &&
+      other is RolsAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

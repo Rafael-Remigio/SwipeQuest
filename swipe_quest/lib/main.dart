@@ -5,11 +5,17 @@ import 'package:swipe_quest/pages/game_page.dart';
 import 'package:provider/provider.dart';
 import 'package:swipe_quest/provider/sheetBox.dart';
 
+import 'model/die.dart';
+import 'model/rolHistory.dart';
+import 'model/rols.dart';
+
 void main() async {
   await Hive.initFlutter();
+  Hive.registerAdapter(RolHistoryAdapter());
+  Hive.registerAdapter(DieAdapter());
+  Hive.registerAdapter(RolsAdapter());
   Hive.registerAdapter(CharacterAdapter());
   var box = await Hive.openBox<Character>('characterBox');
-
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => SheetBox(box: box))
