@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:swipe_quest/model/character.dart';
+import 'package:swipe_quest/pages/character_sheet.dart';
 import 'package:swipe_quest/pages/game_page.dart';
 import 'package:swipe_quest/pages/qrcode_cam.dart';
 import 'package:swipe_quest/components/app_colors.dart';
+import 'package:swipe_quest/provider/sheetBox.dart';
 import 'dnd_documentation.dart';
+import 'package:provider/provider.dart';
 
 class SheetPage extends StatefulWidget {
   @override
@@ -62,24 +66,47 @@ class _SheetPageState extends State<SheetPage> {
 
   List<Widget> _buildRowList(List sheetList) {
     List<Widget> columnList = [];
+    int index = 0;
     for (Map<String, String> i in sheetList) {
+      Color current = AppColors.listColors[index];
+
       columnList.add(Container(
-        color: Colors.green,
-        child: Column(
+        decoration: BoxDecoration(
+            color: current,
+            borderRadius: const BorderRadius.all(Radius.circular(15))),
+        padding: const EdgeInsets.all(12.0),
+        child: Row(
           children: [
-            Text(i["name"]!),
-            Text(i["system"]!),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    i["name"]!,
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  Text(i["system"]!,
+                      style: const TextStyle(
+                          fontSize: 10, fontWeight: FontWeight.normal)),
+                ],
+              ),
+            ),
           ],
         ),
       ));
-      columnList.add(SizedBox(height: 10));
+      columnList.add(const SizedBox(height: 10));
+      index = (index + 1) % AppColors.listColors.length;
     }
-
     return columnList;
   }
 
   final elements = <Map<String, String>>[
     new Map.from({"name": "josé", "system": "dnd"}),
+    new Map.from({"name": "ohh Rui", "system": "tormenta"}),
+    new Map.from({"name": "ohh Rui", "system": "tormenta"}),
+    new Map.from({"name": "ohh Rui", "system": "tormenta"}),
+    new Map.from({"name": "ohh Rui", "system": "tormenta"}),
     new Map.from({"name": "ohh Rui", "system": "tormenta"}),
   ];
 
@@ -98,7 +125,7 @@ class _SheetPageState extends State<SheetPage> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(children: [
-                    Image(image: AssetImage('assets/svg/Group.png')),
+                    const Image(image: AssetImage('assets/svg/Group.png')),
                     Text(
                       "SwipeQuest",
                       style: TextStyle(
@@ -124,9 +151,9 @@ class _SheetPageState extends State<SheetPage> {
                         fontWeight: FontWeight.bold),
                   )),
                   IconButton(
-                    icon: Icon(Icons.add),
+                    icon: const Icon(Icons.add),
                     color: Colors.white,
-                    onPressed: () => {},
+                    onPressed: () => {_onAddCharacter()},
                   ),
                 ],
               ),
@@ -140,11 +167,16 @@ class _SheetPageState extends State<SheetPage> {
                     children: [
                       Expanded(
                         child: Container(
+                            decoration: const BoxDecoration(
+                                color: Color(0xFF1E1E1E),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20))),
                             height: MediaQuery.of(context).size.height * 0.50,
-                            color: const Color(0xFF1E1E1E),
                             padding: const EdgeInsets.all(10.0),
-                            child: Column(
-                              children: _buildRowList(elements),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: _buildRowList(elements),
+                              ),
                             )),
                       ),
                     ],
@@ -160,5 +192,66 @@ class _SheetPageState extends State<SheetPage> {
         onTap: _onItemTapped,
       ),
     );
+  }
+
+  void _onAddCharacter() {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          TextEditingController nameController = TextEditingController();
+          TextEditingController systemController = TextEditingController();
+          final sheetBox = Provider.of<SheetBox>(context);
+
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      "Name"),
+                  TextField(
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Character Name'),
+                      controller: nameController),
+                  const SizedBox(height: 20),
+                  const Text(
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      "RPG System"),
+                  TextField(
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(), hintText: 'RPG System'),
+                      controller: systemController),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          sheetBox.put(Character(
+                              name: nameController.text,
+                              system: systemController.text,
+                              rools: List.empty()));
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => CharacterPage(
+                                characterKey: "key_" + nameController.text,
+                              ),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.lighBlue),
+                        child: const Text("Create"),
+                      )
+                    ],
+                  )
+                ]),
+          );
+        });
   }
 }
