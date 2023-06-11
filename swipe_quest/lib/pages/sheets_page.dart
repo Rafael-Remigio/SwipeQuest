@@ -75,29 +75,39 @@ class _SheetPageState extends State<SheetPage> {
     for (Character i in sheetList) {
       Color current = AppColors.listColors[index];
 
-      columnList.add(Container(
-        decoration: BoxDecoration(
-            color: current,
-            borderRadius: const BorderRadius.all(Radius.circular(15))),
-        padding: const EdgeInsets.all(12.0),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    i.name,
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  Text(i.system,
+      columnList.add(GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    CharacterPage(characterKey: "key_${i.name}")),
+          );
+        },
+        child: Container(
+          decoration: BoxDecoration(
+              color: current,
+              borderRadius: const BorderRadius.all(Radius.circular(15))),
+          padding: const EdgeInsets.all(12.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      i.name,
                       style: const TextStyle(
-                          fontSize: 10, fontWeight: FontWeight.normal)),
-                ],
+                          fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    Text(i.system,
+                        style: const TextStyle(
+                            fontSize: 10, fontWeight: FontWeight.normal)),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ));
       columnList.add(const SizedBox(height: 10));

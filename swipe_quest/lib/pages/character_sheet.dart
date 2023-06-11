@@ -47,6 +47,8 @@ class _CharacterPageState extends State<CharacterPage> {
 
   TextEditingController nameController = TextEditingController();
   TextEditingController systemController = TextEditingController();
+  TextEditingController numberController = TextEditingController();
+  TextEditingController advantageController = TextEditingController();
 
   _onItemTapped(int index) {
     setState(() {
@@ -411,32 +413,39 @@ class _CharacterPageState extends State<CharacterPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text("Number of Die: "),
+                          const Text("Number of Die: "),
                           SizedBox(
                             width: 40,
                             child: TextField(
                               keyboardType: TextInputType.number,
                               decoration: const InputDecoration(
                                   border: OutlineInputBorder(), hintText: ''),
+                              controller: numberController,
                             ),
                           ),
-                          Text("Advantage: "),
+                          const Text("Advantage: "),
                           SizedBox(
                             width: 40,
                             child: TextField(
                               keyboardType: TextInputType.number,
                               decoration: const InputDecoration(
                                   border: OutlineInputBorder(), hintText: ''),
+                              controller: advantageController,
                             ),
                           ),
                           ElevatedButton(
                               onPressed: () {
                                 Navigator.pop(context);
-                                sheetBox.addDice(sheetBox.get(characterKey),
-                                    Rols("Great Sword", 2, {Die.d6: 2}));
+                                sheetBox.addDice(
+                                    sheetBox.get(characterKey),
+                                    Rols(nameController.text,
+                                        int.parse(advantageController.text), {
+                                      groupValue!:
+                                          int.parse(numberController.text)
+                                    }));
                                 setState(() {});
                               },
-                              child: Text("Add Die")),
+                              child: const Text("Add Die")),
                         ],
                       )
                     ],
