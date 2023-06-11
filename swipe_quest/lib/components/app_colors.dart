@@ -6,6 +6,11 @@ class AppColors {
   static Color red = Color(0xFFFE0009);
   static Color grey = Color(0xFF242424);
   static Color lighBlue = Color(0xFF386bf6);
+  static Color lightGreen = Color(0xFFBBFFBA);
+  static Color lighRed = Color(0xFFFFD1D1);
+  static Color lighCyan = Color(0xFFB2C7FF);
+  static Color lighYellow = Color(0xFFFEFFCC);
+  static List<Color> listColors = [lightGreen, lighRed, lighCyan, lighYellow];
 }
 
 MaterialColor getMaterialColor(Color color) {
