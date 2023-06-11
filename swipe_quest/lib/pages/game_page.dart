@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:swipe_quest/pages/generate_qr_code.dart';
+import 'package:swipe_quest/pages/map_page.dart';
 import 'package:swipe_quest/pages/sheets_page.dart';
 
 import 'dnd_documentation.dart';
@@ -61,7 +62,21 @@ class _GamePageState extends State<GamePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Text("Main Page")),
+      body: Center(
+          child: Column(
+        children: [
+          Text("Main Page"),
+          ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => MapPage(),
+                  ),
+                );
+              },
+              child: Text("Map"))
+        ],
+      )),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.black,
