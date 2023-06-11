@@ -291,10 +291,10 @@ class _CharacterPageState extends State<CharacterPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
+                       const Text(
+                          "Name",
                           style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                          "Name"),
+                              fontSize: 20, fontWeight: FontWeight.bold)),
                       TextField(
                           decoration: const InputDecoration(
                               border: OutlineInputBorder(),
@@ -304,9 +304,10 @@ class _CharacterPageState extends State<CharacterPage> {
                       Column(
                         children: [
                           const Text(
+                              "Dice",
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold),
-                              "Dice"),
+                            ),
                           Row(
                             children: [
                               Expanded(

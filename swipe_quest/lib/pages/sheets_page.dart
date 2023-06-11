@@ -219,20 +219,20 @@ class _SheetPageState extends State<SheetPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
+                   Text(
+                      Text("Name") as String,
                       style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                      "Name"),
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                   TextField(
                       decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           hintText: 'Character Name'),
                       controller: nameController),
                   const SizedBox(height: 20),
-                  const Text(
+                   Text(
+                      Text("RPG System") as String,
                       style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                      "RPG System"),
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                   TextField(
                       decoration: const InputDecoration(
                           border: OutlineInputBorder(), hintText: 'RPG System'),
