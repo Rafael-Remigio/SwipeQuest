@@ -19,20 +19,23 @@ class RolsAdapter extends TypeAdapter<Rols> {
     return Rols(
       fields[0] as String,
       fields[1] as int,
-      (fields[2] as Map).cast<Die, int>(),
+      fields[2] as Die,
+      fields[3] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, Rols obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
       ..write(obj.advantage)
       ..writeByte(2)
-      ..write(obj.dice);
+      ..write(obj.dice)
+      ..writeByte(3)
+      ..write(obj.times);
   }
 
   @override

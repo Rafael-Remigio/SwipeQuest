@@ -3,56 +3,45 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:swipe_quest/pages/generate_qr_code.dart';
 import 'dart:math';
 
-import 'package:swipe_quest/pages/qrcode_cam.dart';
+import 'package:swipe_quest/model/rols.dart';
 
-import 'dnd_documentation.dart';
-
-class RollDice extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'RPG Dice Roller',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: RPGDiceRollerPage(),
-    );
-  }
-}
+import '../model/die.dart';
 
 class RPGDiceRollerPage extends StatefulWidget {
+  RPGDiceRollerPage(this.rol);
+  Rols rol;
   @override
-  _RPGDiceRollerPageState createState() => _RPGDiceRollerPageState();
+  _RPGDiceRollerPageState createState() => _RPGDiceRollerPageState(rol);
 }
 
 class _RPGDiceRollerPageState extends State<RPGDiceRollerPage> {
-  int diceValue = 1;
+  _RPGDiceRollerPageState(this.rol);
+  Rols rol;
+  int diceValue = -1;
   int soundEffect = 0;
   bool isRolling = false;
   late StreamSubscription<AccelerometerEvent> _streamSubscription;
-  List<int> diceTypes = [4, 6, 8, 10, 12, 20];
-  int selectedDiceType = 6;
-
-  TextEditingController myController = TextEditingController();
+  Map<Die, int> diceTypes = {
+    Die.d2: 2,
+    Die.d4: 4,
+    Die.d6: 6,
+    Die.d8: 8,
+    Die.d10: 10,
+    Die.d12: 12,
+    Die.d20: 20
+  };
 
   @override
   void initState() {
     super.initState();
-    myController.addListener(_assignValues);
     startAccelerometer();
-  }
-
-  void _assignValues() {
-    print('Second text field: ${myController.text}');
   }
 
   @override
   void dispose() {
     stopAccelerometer();
-    myController.dispose();
     super.dispose();
   }
 
@@ -92,81 +81,28 @@ class _RPGDiceRollerPageState extends State<RPGDiceRollerPage> {
     playRandomSoundEffect();
     await Future.delayed(const Duration(seconds: 1));
     setState(() {
-      diceValue = Random().nextInt(selectedDiceType) + 1;
+      for (int i = 0; i < rol.times; i++) {
+        diceValue += Random().nextInt(diceTypes[rol.dice]!) + 1;
+      }
+      diceValue += rol.advantage;
       isRolling = false;
-    });
-  }
-
-  void changeDiceType(int value) {
-    setState(() {
-      selectedDiceType = value;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('RPG Dice Roller'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            DropdownButton<int>(
-              value: selectedDiceType,
-              onChanged: (value) => changeDiceType(value!),
-              items: diceTypes.map((value) {
-                return DropdownMenuItem<int>(
-                  value: value,
-                  child: Text('D$value'),
-                );
-              }).toList(),
-            ),
-            SizedBox(height: 20),
-            isRolling
-                ? CircularProgressIndicator()
-                : Text(
-                    'Dice Value: $diceValue',
-                    style: TextStyle(fontSize: 24),
-                  ),
-            ElevatedButton(
-              child: Text("Go to camera"),
-              onPressed: () => {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const CameraQrCode(),
-                  ),
-                )
-              },
-            ),
-            TextField(
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter a search term'),
-                controller: myController),
-            ElevatedButton(
-              child: Text("Generate QR from text"),
-              onPressed: () => {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => QRImage(myController.text),
-                  ),
-                )
-              },
-            ),
-            ElevatedButton(
-              child: Text("Documentation"),
-              onPressed: () => {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => Documentation(),
-                  ),
-                )
-              },
-            )
-          ],
-        ),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(height: 20),
+          isRolling
+              ? CircularProgressIndicator()
+              : Text(
+                  'Dice Value: $diceValue',
+                  style: TextStyle(fontSize: 24),
+                ),
+        ],
       ),
     );
   }

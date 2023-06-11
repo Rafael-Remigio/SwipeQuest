@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:swipe_quest/model/character.dart';
 import 'package:swipe_quest/model/die.dart';
 import 'package:swipe_quest/model/rols.dart';
+import 'package:swipe_quest/pages/roll_dice.dart';
 
 import '../components/app_colors.dart';
 import '../provider/sheetBox.dart';
@@ -85,29 +86,34 @@ class _CharacterPageState extends State<CharacterPage> {
     int index = 0;
     for (Rols i in rolsList) {
       Color current = AppColors.listColors[index];
-      columnList.add(Container(
-        decoration: BoxDecoration(
-            color: current,
-            borderRadius: const BorderRadius.all(Radius.circular(15))),
-        padding: const EdgeInsets.all(12.0),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    i.name,
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  Text("${i.dice} + ${i.advantage}",
+      columnList.add(GestureDetector(
+        onTap: () {
+          _showRollingModal(context, i);
+        },
+        child: Container(
+          decoration: BoxDecoration(
+              color: current,
+              borderRadius: const BorderRadius.all(Radius.circular(15))),
+          padding: const EdgeInsets.all(12.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      i.name,
                       style: const TextStyle(
-                          fontSize: 10, fontWeight: FontWeight.normal)),
-                ],
+                          fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    Text("${i.dice} + ${i.advantage}",
+                        style: const TextStyle(
+                            fontSize: 10, fontWeight: FontWeight.normal)),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ));
       columnList.add(const SizedBox(height: 10));
@@ -177,14 +183,7 @@ class _CharacterPageState extends State<CharacterPage> {
                     IconButton(
                       icon: const Icon(Icons.add),
                       color: Colors.white,
-                      onPressed: () => {
-                        _showSimpleModalDialog(context)
-                        /*setState(() {
-
-                          sheetBox.addDice(
-                              character, Rols("Great Sword", 2, {Die.d6: 2}));
-                        })*/
-                      },
+                      onPressed: () => {_showSimpleModalDialog(context)},
                     ),
                   ],
                 ),
@@ -215,22 +214,18 @@ class _CharacterPageState extends State<CharacterPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 50.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 50.0, vertical: 8.0),
                 child: Row(
                   children: [
                     const Expanded(
                         child: Text(
-                      "Rols",
+                      "History",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
                           fontWeight: FontWeight.bold),
                     )),
-                    IconButton(
-                      icon: const Icon(Icons.add),
-                      color: Colors.white,
-                      onPressed: () => {},
-                    ),
                   ],
                 ),
               ),
@@ -287,168 +282,196 @@ class _CharacterPageState extends State<CharacterPage> {
                     maxWidth: MediaQuery.of(context).size.width * 0.80),
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                            "Name"),
+                        TextField(
+                            decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: 'Abilty Name'),
+                            controller: nameController),
+                        const SizedBox(height: 20),
+                        Column(
+                          children: [
+                            const Text(
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                                "Dice"),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: RadioListTile<Die>(
+                                    title: const Text('D2'),
+                                    value: Die.d2,
+                                    groupValue: groupValue,
+                                    onChanged: (Die? value) {
+                                      setsfState(() {
+                                        groupValue = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                Expanded(
+                                  child: RadioListTile<Die>(
+                                    title: const Text('D4'),
+                                    value: Die.d4,
+                                    groupValue: groupValue,
+                                    onChanged: (Die? value) {
+                                      setsfState(() {
+                                        groupValue = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: RadioListTile<Die>(
+                                    title: const Text('D6'),
+                                    value: Die.d6,
+                                    groupValue: groupValue,
+                                    onChanged: (Die? value) {
+                                      setsfState(() {
+                                        groupValue = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                Expanded(
+                                  child: RadioListTile<Die>(
+                                    title: const Text('D8'),
+                                    value: Die.d8,
+                                    groupValue: groupValue,
+                                    onChanged: (Die? value) {
+                                      setsfState(() {
+                                        groupValue = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: RadioListTile<Die>(
+                                    title: const Text('D10'),
+                                    value: Die.d10,
+                                    groupValue: groupValue,
+                                    onChanged: (Die? value) {
+                                      setsfState(() {
+                                        groupValue = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                Expanded(
+                                  child: RadioListTile<Die>(
+                                    title: const Text('D12'),
+                                    value: Die.d12,
+                                    groupValue: groupValue,
+                                    onChanged: (Die? value) {
+                                      setsfState(() {
+                                        groupValue = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: RadioListTile<Die>(
+                                    title: const Text('D20'),
+                                    value: Die.d20,
+                                    groupValue: groupValue,
+                                    onChanged: (Die? value) {
+                                      setsfState(() {
+                                        groupValue = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            const Text("Number of Die: "),
+                            SizedBox(
+                              width: 40,
+                              child: TextField(
+                                keyboardType: TextInputType.number,
+                                decoration: const InputDecoration(
+                                    border: OutlineInputBorder(), hintText: ''),
+                                controller: numberController,
+                              ),
+                            ),
+                            const Text("Advantage: "),
+                            SizedBox(
+                              width: 40,
+                              child: TextField(
+                                keyboardType: TextInputType.number,
+                                decoration: const InputDecoration(
+                                    border: OutlineInputBorder(), hintText: ''),
+                                controller: advantageController,
+                              ),
+                            ),
+                          ],
+                        ),
+                        ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              sheetBox.addDice(
+                                  sheetBox.get(characterKey),
+                                  Rols(
+                                      nameController.text,
+                                      int.parse(advantageController.text),
+                                      groupValue!,
+                                      int.parse(numberController.text)));
+                              setState(() {});
+                            },
+                            child: const Text("Add Die")),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          });
+        });
+  }
+
+  _showRollingModal(contextm, Rols rol) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(builder: (stfContext, setsfState) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)),
+              child: Container(
+                constraints: BoxConstraints(
+                    maxHeight: 400,
+                    maxWidth: MediaQuery.of(context).size.width * 0.80),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                          "Name"),
-                      TextField(
-                          decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              hintText: 'Abilty Name'),
-                          controller: nameController),
-                      const SizedBox(height: 20),
-                      Column(
-                        children: [
-                          const Text(
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                              "Dice"),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: RadioListTile<Die>(
-                                  title: const Text('D2'),
-                                  value: Die.d2,
-                                  groupValue: groupValue,
-                                  onChanged: (Die? value) {
-                                    setsfState(() {
-                                      groupValue = value;
-                                    });
-                                  },
-                                ),
-                              ),
-                              Expanded(
-                                child: RadioListTile<Die>(
-                                  title: const Text('D4'),
-                                  value: Die.d4,
-                                  groupValue: groupValue,
-                                  onChanged: (Die? value) {
-                                    setsfState(() {
-                                      groupValue = value;
-                                    });
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: RadioListTile<Die>(
-                                  title: const Text('D6'),
-                                  value: Die.d6,
-                                  groupValue: groupValue,
-                                  onChanged: (Die? value) {
-                                    setsfState(() {
-                                      groupValue = value;
-                                    });
-                                  },
-                                ),
-                              ),
-                              Expanded(
-                                child: RadioListTile<Die>(
-                                  title: const Text('D8'),
-                                  value: Die.d8,
-                                  groupValue: groupValue,
-                                  onChanged: (Die? value) {
-                                    setsfState(() {
-                                      groupValue = value;
-                                    });
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: RadioListTile<Die>(
-                                  title: const Text('D10'),
-                                  value: Die.d10,
-                                  groupValue: groupValue,
-                                  onChanged: (Die? value) {
-                                    setsfState(() {
-                                      groupValue = value;
-                                    });
-                                  },
-                                ),
-                              ),
-                              Expanded(
-                                child: RadioListTile<Die>(
-                                  title: const Text('D12'),
-                                  value: Die.d12,
-                                  groupValue: groupValue,
-                                  onChanged: (Die? value) {
-                                    setsfState(() {
-                                      groupValue = value;
-                                    });
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: RadioListTile<Die>(
-                                  title: const Text('D20'),
-                                  value: Die.d20,
-                                  groupValue: groupValue,
-                                  onChanged: (Die? value) {
-                                    setsfState(() {
-                                      groupValue = value;
-                                    });
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          const Text("Number of Die: "),
-                          SizedBox(
-                            width: 40,
-                            child: TextField(
-                              keyboardType: TextInputType.number,
-                              decoration: const InputDecoration(
-                                  border: OutlineInputBorder(), hintText: ''),
-                              controller: numberController,
-                            ),
-                          ),
-                          const Text("Advantage: "),
-                          SizedBox(
-                            width: 40,
-                            child: TextField(
-                              keyboardType: TextInputType.number,
-                              decoration: const InputDecoration(
-                                  border: OutlineInputBorder(), hintText: ''),
-                              controller: advantageController,
-                            ),
-                          ),
-                          ElevatedButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                                sheetBox.addDice(
-                                    sheetBox.get(characterKey),
-                                    Rols(nameController.text,
-                                        int.parse(advantageController.text), {
-                                      groupValue!:
-                                          int.parse(numberController.text)
-                                    }));
-                                setState(() {});
-                              },
-                              child: const Text("Add Die")),
-                        ],
-                      )
-                    ],
+                    children: [RPGDiceRollerPage(rol)],
                   ),
                 ),
               ),

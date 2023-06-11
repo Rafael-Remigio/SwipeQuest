@@ -11,7 +11,8 @@ class Rols {
   @HiveField(1)
   int advantage;
   @HiveField(2)
-  Map<Die, int> dice;
-
-  Rols(this.name, this.advantage, this.dice);
+  Die dice;
+  @HiveField(3)
+  int times;
+  Rols(this.name, this.advantage, this.dice, this.times);
 }
