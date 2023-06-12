@@ -295,11 +295,19 @@ class _CharacterPageState extends State<CharacterPage> {
                   ],
                 ),
               ),
-              ElevatedButton(
-                  onPressed: () {
-                    _showQRCodeModal(context, character);
-                  },
-                  child: const Text("Share this character"))
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.lighBlue,
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20)))),
+                    onPressed: () {
+                      _showQRCodeModal(context, character);
+                    },
+                    child: const Text("Share this character")),
+              )
             ]),
       ),
       bottomNavigationBar: BottomNavigationBar(
