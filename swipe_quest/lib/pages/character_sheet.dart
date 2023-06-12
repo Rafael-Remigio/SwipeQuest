@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:swipe_quest/model/character.dart';
 import 'package:swipe_quest/model/die.dart';
+import 'package:swipe_quest/model/rolHistory.dart';
 import 'package:swipe_quest/model/rols.dart';
 import 'package:swipe_quest/pages/roll_dice.dart';
 
@@ -122,6 +123,45 @@ class _CharacterPageState extends State<CharacterPage> {
     return columnList;
   }
 
+  List<Widget> _buildHistoryList(List rolsList) {
+    List<Widget> columnList = [];
+    int index = 0;
+    for (RolHistory i in rolsList) {
+      Color current = AppColors.listColors[index];
+      columnList.add(Container(
+        decoration: BoxDecoration(
+            color: current,
+            borderRadius: const BorderRadius.all(Radius.circular(15))),
+        padding: const EdgeInsets.all(12.0),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    i.name,
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  Text("${i.advantage} + ${i.values}",
+                      style: const TextStyle(
+                          fontSize: 10, fontWeight: FontWeight.normal)),
+                  Text("${i.dateTime}",
+                      style: const TextStyle(
+                          fontSize: 10, fontWeight: FontWeight.normal)),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ));
+      columnList.add(const SizedBox(height: 10));
+      index = (index + 1) % AppColors.listColors.length;
+    }
+    return columnList;
+  }
+
   @override
   Widget build(BuildContext context) {
     final sheetBox = Provider.of<SheetBox>(context);
@@ -213,12 +253,11 @@ class _CharacterPageState extends State<CharacterPage> {
                   ],
                 ),
               ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 50.0, vertical: 8.0),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 8.0),
                 child: Row(
                   children: [
-                    const Expanded(
+                    Expanded(
                         child: Text(
                       "History",
                       style: TextStyle(
@@ -245,7 +284,8 @@ class _CharacterPageState extends State<CharacterPage> {
                               padding: const EdgeInsets.all(10.0),
                               child: SingleChildScrollView(
                                 child: Column(
-                                  children: [],
+                                  children:
+                                      _buildHistoryList(character.rolsHistory),
                                 ),
                               )),
                         ),
@@ -454,7 +494,7 @@ class _CharacterPageState extends State<CharacterPage> {
         });
   }
 
-  _showRollingModal(contextm, Rols rol) {
+  _showRollingModal(context, Rols rol) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -471,12 +511,12 @@ class _CharacterPageState extends State<CharacterPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [RPGDiceRollerPage(rol)],
+                    children: [RPGDiceRollerPage(rol, characterKey)],
                   ),
                 ),
               ),
             );
           });
-        });
+        }).then((value) => setState(() {}));
   }
 }

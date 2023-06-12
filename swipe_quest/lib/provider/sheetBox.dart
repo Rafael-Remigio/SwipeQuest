@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:swipe_quest/model/character.dart';
+import 'package:swipe_quest/model/rolHistory.dart';
 
 import '../model/rols.dart';
 
@@ -30,6 +31,16 @@ class SheetBox extends ChangeNotifier {
     List<Rols> rols = char.rools;
     rols.add(rol);
     char.rools = rols;
+
+    box.put("key_${currentCharacter.name}", char);
+  }
+
+  addHistoryEntry(Character currentCharacter, RolHistory rol) {
+    Character char = box.get("key_${currentCharacter.name}");
+
+    List<RolHistory> rols = char.rolsHistory;
+    rols.add(rol);
+    char.rolsHistory = rols;
 
     box.put("key_${currentCharacter.name}", char);
   }
