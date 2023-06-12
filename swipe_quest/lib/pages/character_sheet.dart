@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 import 'package:swipe_quest/model/character.dart';
 import 'package:swipe_quest/model/die.dart';
 import 'package:swipe_quest/model/rolHistory.dart';

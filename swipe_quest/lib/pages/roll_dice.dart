@@ -105,7 +105,6 @@ class _RPGDiceRollerPageState extends State<RPGDiceRollerPage> {
 
   @override
   Widget build(BuildContext context) {
-    final sheetBox = Provider.of<SheetBox>(context);
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

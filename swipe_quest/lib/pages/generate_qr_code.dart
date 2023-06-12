@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -13,6 +11,7 @@ class QRImage extends StatelessWidget {
   final json = const JsonCodec();
   @override
   Widget build(BuildContext context) {
+    character.rolsHistory = List.empty(growable: true);
     var encoded = json.encode(character.toJson());
 
     return Scaffold(
