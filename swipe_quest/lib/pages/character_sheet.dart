@@ -10,7 +10,7 @@ import 'package:swipe_quest/pages/roll_dice.dart';
 import '../components/app_colors.dart';
 import '../provider/sheetBox.dart';
 import 'dnd_documentation.dart';
-import 'game_page.dart';
+import 'main_page.dart';
 import 'qrcode_cam.dart';
 import 'sheets_page.dart';
 
@@ -62,7 +62,7 @@ class _CharacterPageState extends State<CharacterPage> {
           page = const Documentation();
           break;
         case 1:
-          page = GamePage();
+          page = MainPage();
           break;
         case 2:
           page = SheetPage();
@@ -297,11 +297,7 @@ class _CharacterPageState extends State<CharacterPage> {
               ),
               ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => QRImage(character)),
-                    );
+                    _showQRCodeModal(context, character);
                   },
                   child: const Text("Share this character"))
             ]),
@@ -522,6 +518,32 @@ class _CharacterPageState extends State<CharacterPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [RPGDiceRollerPage(rol, characterKey)],
+                  ),
+                ),
+              ),
+            );
+          });
+        }).then((value) => setState(() {}));
+  }
+
+  _showQRCodeModal(context, Character character) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(builder: (stfContext, setsfState) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)),
+              child: Container(
+                constraints: BoxConstraints(
+                    maxHeight: 400,
+                    maxWidth: MediaQuery.of(context).size.width * 0.80),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [QRImage(character)],
                   ),
                 ),
               ),

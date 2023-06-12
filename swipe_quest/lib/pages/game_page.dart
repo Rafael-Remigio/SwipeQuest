@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:swipe_quest/pages/generate_qr_code.dart';
 import 'package:swipe_quest/pages/map_page.dart';
 import 'package:swipe_quest/pages/qrcode_cam.dart';
 import 'package:swipe_quest/pages/sheets_page.dart';

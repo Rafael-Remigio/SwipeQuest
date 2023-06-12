@@ -14,22 +14,16 @@ class QRImage extends StatelessWidget {
     character.rolsHistory = List.empty(growable: true);
     var encoded = json.encode(character.toJson());
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Share this QR code'),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: QrImageView(
-          data: encoded,
-          size: 280,
-          // You can include embeddedImageStyle Property if you
-          //wanna embed an image from your Asset folder
-          embeddedImageStyle: const QrEmbeddedImageStyle(
-            size: Size(
-              100,
-              100,
-            ),
+    return Center(
+      child: QrImageView(
+        data: encoded,
+        size: 280,
+        // You can include embeddedImageStyle Property if you
+        //wanna embed an image from your Asset folder
+        embeddedImageStyle: const QrEmbeddedImageStyle(
+          size: Size(
+            100,
+            100,
           ),
         ),
       ),
