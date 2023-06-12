@@ -48,3 +48,25 @@ class CharacterAdapter extends TypeAdapter<Character> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+Character _$CharacterFromJson(Map<String, dynamic> json) => Character(
+      name: json['name'] as String,
+      system: json['system'] as String,
+      rools: (json['rools'] as List<dynamic>)
+          .map((e) => Rols.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      rolsHistory: (json['rolsHistory'] as List<dynamic>)
+          .map((e) => RolHistory.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$CharacterToJson(Character instance) => <String, dynamic>{
+      'name': instance.name,
+      'system': instance.system,
+      'rools': instance.rools,
+      'rolsHistory': instance.rolsHistory,
+    };

@@ -122,10 +122,6 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    final sheetBox = Provider.of<SheetBox>(context);
-
-    var elements = sheetBox.getAll();
-
     return Scaffold(
       backgroundColor: const Color.fromRGBO(0, 8, 30, 1),
       body: SingleChildScrollView(
@@ -154,8 +150,7 @@ class _MainPageState extends State<MainPage> {
                 ],
               ),
               const Padding(
-                padding:
-                    EdgeInsets.symmetric(vertical: 8.0, horizontal: 50.0),
+                padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 50.0),
                 child: Row(
                   children: [
                     Expanded(
@@ -184,8 +179,7 @@ class _MainPageState extends State<MainPage> {
                                       BorderRadius.all(Radius.circular(20))),
                               height: MediaQuery.of(context).size.height * 0.50,
                               padding: const EdgeInsets.all(10.0),
-                              child: MapPage()
-                            ),
+                              child: MapPage()),
                         ),
                       ],
                     ),
@@ -202,5 +196,4 @@ class _MainPageState extends State<MainPage> {
       ),
     );
   }
-
 }

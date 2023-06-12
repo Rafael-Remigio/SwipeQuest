@@ -19,20 +19,23 @@ class RolsAdapter extends TypeAdapter<Rols> {
     return Rols(
       fields[0] as String,
       fields[1] as int,
-      (fields[2] as Map).cast<Die, int>(),
+      fields[2] as Die,
+      fields[3] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, Rols obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
       ..write(obj.advantage)
       ..writeByte(2)
-      ..write(obj.dice);
+      ..write(obj.dice)
+      ..writeByte(3)
+      ..write(obj.times);
   }
 
   @override
@@ -45,3 +48,31 @@ class RolsAdapter extends TypeAdapter<Rols> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+Rols _$RolsFromJson(Map<String, dynamic> json) => Rols(
+      json['name'] as String,
+      json['advantage'] as int,
+      $enumDecode(_$DieEnumMap, json['dice']),
+      json['times'] as int,
+    );
+
+Map<String, dynamic> _$RolsToJson(Rols instance) => <String, dynamic>{
+      'name': instance.name,
+      'advantage': instance.advantage,
+      'dice': _$DieEnumMap[instance.dice]!,
+      'times': instance.times,
+    };
+
+const _$DieEnumMap = {
+  Die.d2: 0,
+  Die.d4: 1,
+  Die.d6: 2,
+  Die.d8: 3,
+  Die.d10: 4,
+  Die.d12: 5,
+  Die.d20: 6,
+};

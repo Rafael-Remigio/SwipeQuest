@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:swipe_quest/model/character.dart';
+import 'package:swipe_quest/model/rolHistory.dart';
 
 import '../model/rols.dart';
 
@@ -17,7 +18,13 @@ class SheetBox extends ChangeNotifier {
   }
 
   Character get(String key) {
-    return box.get(key);
+    var here = box.get(key);
+    if (here != null) {
+      return here;
+    } else {
+      return Character(
+          name: "", system: "", rolsHistory: List.empty(), rools: List.empty());
+    }
   }
 
   List<Character> getAll() {
@@ -32,6 +39,34 @@ class SheetBox extends ChangeNotifier {
     char.rools = rols;
 
     box.put("key_${currentCharacter.name}", char);
+  }
+
+  deleteDice(String currentCharacter, Rols rol) {
+    Character char = box.get(currentCharacter);
+
+    List<Rols> rols = char.rools;
+    rols.remove(rol);
+    char.rools = rols;
+
+    box.put(currentCharacter, char);
+  }
+
+  addHistoryEntry(Character currentCharacter, RolHistory rol) {
+    Character char = box.get("key_${currentCharacter.name}");
+
+    List<RolHistory> rols = char.rolsHistory;
+    rols.add(rol);
+    char.rolsHistory = rols;
+
+    box.put("key_${currentCharacter.name}", char);
+  }
+
+  deleteHistory(String currentCharacter) {
+    Character char = box.get(currentCharacter);
+
+    char.rolsHistory = List.empty(growable: true);
+
+    box.put(currentCharacter, char);
   }
 
   updateNameAndSystem(Character currentCharacter, String name, String system) {
