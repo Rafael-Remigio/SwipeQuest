@@ -220,7 +220,7 @@ class _SheetPageState extends State<SheetPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(Text("Name") as String,
+                  Text("Name",
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                   TextField(
@@ -229,7 +229,7 @@ class _SheetPageState extends State<SheetPage> {
                           hintText: 'Character Name'),
                       controller: nameController),
                   const SizedBox(height: 20),
-                  Text(Text("RPG System") as String,
+                  Text("RPG System",
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                   TextField(

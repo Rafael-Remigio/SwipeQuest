@@ -53,7 +53,7 @@ class _CameraQrCodeState extends State<CameraQrCode>
             ));
       } on Exception catch (e) {
         Fluttertoast.showToast(
-            msg: 'This is toast notification',
+            msg: 'Error Parsing QRCode',
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             textColor: AppColors.black);
