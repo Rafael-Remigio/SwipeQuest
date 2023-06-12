@@ -7,47 +7,10 @@ import 'package:swipe_quest/pages/generate_qr_code.dart';
 import 'package:swipe_quest/pages/qrcode_cam.dart';
 import 'package:swipe_quest/pages/sheets_page.dart';
 
+import '../components/app_colors.dart';
 import 'main_page.dart';
 
-Future<List<dynamic>> fetchRaces() async {
-  String url = "https://www.dnd5eapi.co/api/races";
-
-  final response = await http.get(Uri.parse(url));
-
-  if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    // need to use utf8 decode because of special chars
-    Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
-
-    //debugPrint(posts.toString());
-    return body["results"];
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load album');
-  }
-}
-
-Future<List<dynamic>> fetchClasses() async {
-  String url = "https://www.dnd5eapi.co/api/classes";
-
-  final response = await http.get(Uri.parse(url));
-
-  if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    // need to use utf8 decode because of special chars
-    Map<String, dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
-
-    //debugPrint(posts.toString());
-    return body["results"];
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load album');
-  }
-}
+import 'signature_screen.dart';
 
 class Documentation extends StatefulWidget {
   const Documentation({super.key});
@@ -109,139 +72,68 @@ class _DocumentationState extends State<Documentation> {
         label: "D&D Docs")
   ];
 
-  final _dndBottomNavigationBar = [
-    BottomNavigationBarItem(
-        icon: SvgPicture.asset('assets/svg/helmet-svgrepo-com.svg',
-            semanticsLabel: 'Label'),
-        label: "classes"),
-    BottomNavigationBarItem(
-        icon: SvgPicture.asset('assets/svg/helmet-svgrepo-com.svg',
-            semanticsLabel: 'Label'),
-        label: "races")
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Scaffold(
-          body: PageView(
-              controller: _pageController,
-              onPageChanged: (newIndex) {
-                setState(() {
-                  _currentIndex = newIndex;
-                });
-              },
-              children: const [ClassesPage(), RacesPage()]),
-          bottomNavigationBar: BottomNavigationBar(
-            currentIndex: _currentIndex,
-            items: _dndBottomNavigationBar,
-            onTap: (tappedIndex) {
-              setState(() {
-                _pageController.animateToPage(tappedIndex,
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.decelerate);
-              });
-            },
-            //type: BottomNavigationBarType.fixed,
-          ),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.black,
-          items: _bottomNavigationBar,
-          onTap: _onItemTapped,
-        ));
+      backgroundColor: const Color.fromRGBO(0, 8, 30, 1),
+      body: SingleChildScrollView(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 128),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                ],
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 130.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: Text(
+                      "Made by",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold),
+                    ))
+                  ],
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10.0, horizontal: 40),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                              decoration: const BoxDecoration(
+                                  color: Color(0xFF1E1E1E),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20))),
+                              height: MediaQuery.of(context).size.height * 0.50,
+                              padding: const EdgeInsets.all(10.0),
+                              child: SignatureScreen()),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              )
+            ]),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.black,
+        items: _bottomNavigationBar,
+        onTap: _onItemTapped,
+      ),
+    );
   }
-}
 
-class RacesPage extends StatelessWidget {
-  const RacesPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          iconTheme: const IconThemeData(color: Colors.black),
-          backgroundColor: const Color.fromARGB(0, 255, 255, 255),
-          elevation: 0,
-          actions: [
-            IconButton(
-                color: Colors.black,
-                icon: const Icon(Icons.notifications),
-                tooltip: 'View Notifications',
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text('This is does nothing for now')));
-                })
-          ],
-        ),
-        body: FutureBuilder(
-          future: fetchRaces(),
-          builder:
-              (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
-            if (snapshot.hasData) {
-              return Scaffold(
-                  body: Center(
-                      child: SingleChildScrollView(
-                          scrollDirection: Axis.vertical,
-                          child: Column(
-                            children: snapshot.data!
-                                .map((race) => Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [Text(race["name"])],
-                                    ))
-                                .toList(),
-                          ))));
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
-          },
-        ),
-      );
-}
-
-class ClassesPage extends StatelessWidget {
-  const ClassesPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          iconTheme: const IconThemeData(color: Colors.black),
-          backgroundColor: const Color.fromARGB(0, 255, 255, 255),
-          elevation: 0,
-          actions: [
-            IconButton(
-                color: Colors.black,
-                icon: const Icon(Icons.notifications),
-                tooltip: 'View Notifications',
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text('This is does nothing for now')));
-                })
-          ],
-        ),
-        body: FutureBuilder(
-          future: fetchClasses(),
-          builder:
-              (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
-            if (snapshot.hasData) {
-              return Scaffold(
-                  body: Center(
-                      child: SingleChildScrollView(
-                          scrollDirection: Axis.vertical,
-                          child: Column(
-                            children: snapshot.data!
-                                .map((race) => Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [Text(race["name"])],
-                                    ))
-                                .toList(),
-                          ))));
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
-          },
-        ),
-      );
 }
