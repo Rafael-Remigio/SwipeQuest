@@ -89,6 +89,9 @@ class _CharacterPageState extends State<CharacterPage> {
     for (Rols i in rolsList) {
       Color current = AppColors.listColors[index];
       columnList.add(GestureDetector(
+        onLongPress: () {
+          _showDeletegModal(context, i);
+        },
         onTap: () {
           _showRollingModal(context, i);
         },
@@ -166,8 +169,14 @@ class _CharacterPageState extends State<CharacterPage> {
   @override
   Widget build(BuildContext context) {
     final sheetBox = Provider.of<SheetBox>(context);
-    Character character = sheetBox.get(characterKey);
-
+    Character character = Character(
+        name: "name",
+        system: "system",
+        rools: List.empty(growable: true),
+        rolsHistory: List.empty(growable: true));
+    try {
+      character = sheetBox.get(characterKey);
+    } catch (e) {}
     return Scaffold(
       backgroundColor: const Color.fromRGBO(0, 8, 30, 1),
       body: SingleChildScrollView(
@@ -205,7 +214,12 @@ class _CharacterPageState extends State<CharacterPage> {
                             ]),
                       ),
                     ),
-                    const Image(image: AssetImage('assets/svg/Vector.png')),
+                    GestureDetector(
+                        onTap: () {
+                          _editNameModal(context);
+                        },
+                        child: const Image(
+                            image: AssetImage('assets/svg/Vector.png'))),
                   ],
                 ),
               ),
@@ -254,11 +268,12 @@ class _CharacterPageState extends State<CharacterPage> {
                   ],
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 8.0),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 50.0, vertical: 8.0),
                 child: Row(
                   children: [
-                    Expanded(
+                    const Expanded(
                         child: Text(
                       "History",
                       style: TextStyle(
@@ -266,6 +281,15 @@ class _CharacterPageState extends State<CharacterPage> {
                           fontSize: 20,
                           fontWeight: FontWeight.bold),
                     )),
+                    IconButton(
+                      icon: const Icon(Icons.delete),
+                      color: Colors.white,
+                      onPressed: () => {
+                        setState(() {
+                          sheetBox.deleteHistory(characterKey);
+                        })
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -300,7 +324,7 @@ class _CharacterPageState extends State<CharacterPage> {
                 child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.lighBlue,
-                        shape: RoundedRectangleBorder(
+                        shape: const RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(20)))),
                     onPressed: () {
@@ -495,6 +519,8 @@ class _CharacterPageState extends State<CharacterPage> {
                                       int.parse(advantageController.text),
                                       groupValue!,
                                       int.parse(numberController.text)));
+                              nameController.text = "";
+                              numberController.text = "";
                               setState(() {});
                             },
                             child: const Text("Add Die")),
@@ -526,6 +552,124 @@ class _CharacterPageState extends State<CharacterPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [RPGDiceRollerPage(rol, characterKey)],
+                  ),
+                ),
+              ),
+            );
+          });
+        }).then((value) => setState(() {}));
+  }
+
+  _editNameModal(context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(builder: (stfContext, setsfState) {
+            final sheetBox = Provider.of<SheetBox>(context);
+            Character char = sheetBox.get(characterKey);
+            nameController.text = char.name;
+            systemController.text = char.system;
+
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)),
+              child: Container(
+                constraints: BoxConstraints(
+                    maxHeight: 400,
+                    maxWidth: MediaQuery.of(context).size.width * 0.80),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Name",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold)),
+                        TextField(
+                            decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: 'Character Name'),
+                            controller: nameController),
+                        const SizedBox(height: 20),
+                        Text("RPG System",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold)),
+                        TextField(
+                            decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: 'RPG System'),
+                            controller: systemController),
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pop();
+
+                                sheetBox.delete(char);
+                                sheetBox.put(Character(
+                                    name: nameController.text,
+                                    system: systemController.text,
+                                    rools: char.rools,
+                                    rolsHistory: char.rolsHistory));
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => CharacterPage(
+                                      characterKey:
+                                          "key_${nameController.text}",
+                                    ),
+                                  ),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppColors.lighBlue),
+                              child: const Text("Create"),
+                            )
+                          ],
+                        )
+                      ]),
+                ),
+              ),
+            );
+          });
+        });
+  }
+
+  _showDeletegModal(context, Rols rol) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(builder: (stfContext, setsfState) {
+            final sheetBox = Provider.of<SheetBox>(context);
+
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)),
+              child: Container(
+                constraints: BoxConstraints(
+                    maxHeight: 300,
+                    maxWidth: MediaQuery.of(context).size.width * 0.80),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      IconButton(
+                          iconSize: 30,
+                          onPressed: () {
+                            sheetBox.deleteDice(characterKey, rol);
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(
+                            Icons.delete,
+                            color: AppColors.red,
+                          )),
+                      const Text("Delete Ability")
+                    ],
                   ),
                 ),
               ),
