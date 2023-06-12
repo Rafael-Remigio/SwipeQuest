@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:swipe_quest/model/character.dart';
 import 'package:swipe_quest/model/die.dart';
 import 'package:swipe_quest/model/rolHistory.dart';
 import 'package:swipe_quest/model/rols.dart';
+import 'package:swipe_quest/pages/generate_qr_code.dart';
 import 'package:swipe_quest/pages/roll_dice.dart';
 
 import '../components/app_colors.dart';
@@ -293,7 +295,16 @@ class _CharacterPageState extends State<CharacterPage> {
                     ),
                   ],
                 ),
-              )
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => QRImage(character)),
+                    );
+                  },
+                  child: const Text("Share this character"))
             ]),
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -322,7 +333,6 @@ class _CharacterPageState extends State<CharacterPage> {
                     maxWidth: MediaQuery.of(context).size.width * 0.80),
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
-
                   child: SingleChildScrollView(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -357,7 +367,6 @@ class _CharacterPageState extends State<CharacterPage> {
                                       });
                                     },
                                   ),
-
                                 ),
                                 Expanded(
                                   child: RadioListTile<Die>(
