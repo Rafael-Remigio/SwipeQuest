@@ -5,6 +5,7 @@ import 'package:swipe_quest/pages/qrcode_cam.dart';
 import 'package:swipe_quest/pages/sheets_page.dart';
 
 import 'dnd_documentation.dart';
+import 'dnd_documentationCopy.dart';
 
 class GamePage extends StatefulWidget {
   @override
@@ -46,7 +47,7 @@ class _GamePageState extends State<GamePage> {
           page = SheetPage();
           break;
         case 3:
-          page = CameraQrCode();
+          page = Documentation();
           break;
         default:
       }

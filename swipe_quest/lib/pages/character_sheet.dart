@@ -10,6 +10,7 @@ import 'package:swipe_quest/pages/roll_dice.dart';
 import '../components/app_colors.dart';
 import '../provider/sheetBox.dart';
 import 'dnd_documentation.dart';
+import 'dnd_documentationCopy.dart';
 import 'main_page.dart';
 import 'qrcode_cam.dart';
 import 'sheets_page.dart';

@@ -3,7 +3,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:swipe_quest/model/character.dart';
 import 'package:swipe_quest/model/rols.dart';
 import 'package:swipe_quest/pages/character_sheet.dart';
-import 'package:swipe_quest/pages/game_page.dart';
 import 'package:swipe_quest/pages/qrcode_cam.dart';
 import 'package:swipe_quest/components/app_colors.dart';
 import 'package:swipe_quest/pages/sheets_page.dart';
@@ -12,6 +11,7 @@ import '../model/rolHistory.dart';
 import 'dnd_documentation.dart';
 import 'package:provider/provider.dart';
 
+import 'dnd_documentationCopy.dart';
 import 'map_page.dart';
 import 'character_sheet.dart';
 
