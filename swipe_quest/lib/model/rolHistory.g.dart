@@ -48,3 +48,22 @@ class RolHistoryAdapter extends TypeAdapter<RolHistory> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+RolHistory _$RolHistoryFromJson(Map<String, dynamic> json) => RolHistory(
+      json['name'] as String,
+      json['advantage'] as int,
+      (json['values'] as List<dynamic>).map((e) => e as int).toList(),
+      DateTime.parse(json['dateTime'] as String),
+    );
+
+Map<String, dynamic> _$RolHistoryToJson(RolHistory instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'advantage': instance.advantage,
+      'values': instance.values,
+      'dateTime': instance.dateTime.toIso8601String(),
+    };

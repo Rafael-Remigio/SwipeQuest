@@ -21,10 +21,12 @@ dependencies:
 
   google_maps_flutter: ^2.0.12
 
-
   flutter_svg: ^2.0.6
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+  fluttertoast:
+  json_serializable: ^6.7.0
+
 
 dev_dependencies:
   flutter_test:

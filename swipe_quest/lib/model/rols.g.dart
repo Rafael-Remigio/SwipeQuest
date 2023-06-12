@@ -48,3 +48,31 @@ class RolsAdapter extends TypeAdapter<Rols> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+Rols _$RolsFromJson(Map<String, dynamic> json) => Rols(
+      json['name'] as String,
+      json['advantage'] as int,
+      $enumDecode(_$DieEnumMap, json['dice']),
+      json['times'] as int,
+    );
+
+Map<String, dynamic> _$RolsToJson(Rols instance) => <String, dynamic>{
+      'name': instance.name,
+      'advantage': instance.advantage,
+      'dice': _$DieEnumMap[instance.dice]!,
+      'times': instance.times,
+    };
+
+const _$DieEnumMap = {
+  Die.d2: 0,
+  Die.d4: 1,
+  Die.d6: 2,
+  Die.d8: 3,
+  Die.d10: 4,
+  Die.d12: 5,
+  Die.d20: 6,
+};

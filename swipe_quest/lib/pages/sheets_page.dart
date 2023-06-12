@@ -4,6 +4,7 @@ import 'package:swipe_quest/model/character.dart';
 import 'package:swipe_quest/model/rols.dart';
 import 'package:swipe_quest/pages/character_sheet.dart';
 import 'package:swipe_quest/pages/game_page.dart';
+import 'package:swipe_quest/pages/main_page.dart';
 import 'package:swipe_quest/pages/qrcode_cam.dart';
 import 'package:swipe_quest/components/app_colors.dart';
 import 'package:swipe_quest/provider/sheetBox.dart';
@@ -48,7 +49,7 @@ class _SheetPageState extends State<SheetPage> {
           page = const Documentation();
           break;
         case 1:
-          page = GamePage();
+          page = MainPage();
           break;
         case 2:
           page = SheetPage();
@@ -219,8 +220,7 @@ class _SheetPageState extends State<SheetPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                   Text(
-                      Text("Name") as String,
+                  Text(Text("Name") as String,
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                   TextField(
@@ -229,8 +229,7 @@ class _SheetPageState extends State<SheetPage> {
                           hintText: 'Character Name'),
                       controller: nameController),
                   const SizedBox(height: 20),
-                   Text(
-                      Text("RPG System") as String,
+                  Text(Text("RPG System") as String,
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                   TextField(
