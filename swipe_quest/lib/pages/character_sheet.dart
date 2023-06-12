@@ -322,6 +322,7 @@ class _CharacterPageState extends State<CharacterPage> {
                     maxWidth: MediaQuery.of(context).size.width * 0.80),
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
+
                   child: SingleChildScrollView(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -356,6 +357,7 @@ class _CharacterPageState extends State<CharacterPage> {
                                       });
                                     },
                                   ),
+
                                 ),
                                 Expanded(
                                   child: RadioListTile<Die>(

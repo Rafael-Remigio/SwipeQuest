@@ -4,7 +4,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:swipe_quest/pages/game_page.dart';
 import 'package:swipe_quest/pages/generate_qr_code.dart';
+import 'package:swipe_quest/pages/qrcode_cam.dart';
 import 'package:swipe_quest/pages/sheets_page.dart';
+
+import 'main_page.dart';
 
 Future<List<dynamic>> fetchRaces() async {
   String url = "https://www.dnd5eapi.co/api/races";
@@ -66,15 +69,17 @@ class _DocumentationState extends State<Documentation> {
           page = const Documentation();
           break;
         case 1:
-          page = GamePage();
+          page = MainPage();
           break;
         case 2:
           page = SheetPage();
           break;
         case 3:
-          page = const QRImage("Here");
+          page = const CameraQrCode();
           break;
         default:
+          page = const Documentation();
+          break;
       }
 
       Navigator.of(context).push(

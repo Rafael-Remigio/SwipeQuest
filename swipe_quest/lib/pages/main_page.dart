@@ -6,28 +6,32 @@ import 'package:swipe_quest/pages/character_sheet.dart';
 import 'package:swipe_quest/pages/game_page.dart';
 import 'package:swipe_quest/pages/qrcode_cam.dart';
 import 'package:swipe_quest/components/app_colors.dart';
+import 'package:swipe_quest/pages/sheets_page.dart';
 import 'package:swipe_quest/provider/sheetBox.dart';
 import '../model/rolHistory.dart';
 import 'dnd_documentation.dart';
 import 'package:provider/provider.dart';
 
-class SheetPage extends StatefulWidget {
+import 'map_page.dart';
+import 'character_sheet.dart';
+
+class MainPage extends StatefulWidget {
   @override
-  _SheetPageState createState() => _SheetPageState();
+  _MainPageState createState() => _MainPageState();
 }
 
-class _SheetPageState extends State<SheetPage> {
+class _MainPageState extends State<MainPage> {
   final _bottomNavigationBar = [
     BottomNavigationBarItem(
         icon: SvgPicture.asset('assets/svg/menu - home.svg',
             semanticsLabel: 'docs'),
         label: ""),
     BottomNavigationBarItem(
-        icon: SvgPicture.asset('assets/svg/menu - wallet.svg',
+        icon: SvgPicture.asset('assets/svg/menu - wallet_active.svg',
             semanticsLabel: 'home'),
         label: ""),
     BottomNavigationBarItem(
-        icon: SvgPicture.asset('assets/svg/menu - analysis_active.svg',
+        icon: SvgPicture.asset('assets/svg/menu - analysis.svg',
             semanticsLabel: 'sheet'),
         label: ""),
     BottomNavigationBarItem(
@@ -48,7 +52,7 @@ class _SheetPageState extends State<SheetPage> {
           page = const Documentation();
           break;
         case 1:
-          page = GamePage();
+          page = MainPage();
           break;
         case 2:
           page = SheetPage();
@@ -149,24 +153,19 @@ class _SheetPageState extends State<SheetPage> {
                   )
                 ],
               ),
-              Padding(
+              const Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 50.0),
+                    EdgeInsets.symmetric(vertical: 8.0, horizontal: 50.0),
                 child: Row(
                   children: [
-                    const Expanded(
+                    Expanded(
                         child: Text(
-                      "Sheets",
+                      "Games",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
                           fontWeight: FontWeight.bold),
-                    )),
-                    IconButton(
-                      icon: const Icon(Icons.add),
-                      color: Colors.white,
-                      onPressed: () => {_onAddCharacter()},
-                    ),
+                    ))
                   ],
                 ),
               ),
@@ -185,11 +184,8 @@ class _SheetPageState extends State<SheetPage> {
                                       BorderRadius.all(Radius.circular(20))),
                               height: MediaQuery.of(context).size.height * 0.50,
                               padding: const EdgeInsets.all(10.0),
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  children: _buildRowList(elements),
-                                ),
-                              )),
+                              child: MapPage()
+                            ),
                         ),
                       ],
                     ),
@@ -207,66 +203,4 @@ class _SheetPageState extends State<SheetPage> {
     );
   }
 
-  void _onAddCharacter() {
-    showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          final sheetBox = Provider.of<SheetBox>(context);
-
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                   Text(
-                      Text("Name") as String,
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  TextField(
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Character Name'),
-                      controller: nameController),
-                  const SizedBox(height: 20),
-                   Text(
-                      Text("RPG System") as String,
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  TextField(
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(), hintText: 'RPG System'),
-                      controller: systemController),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          sheetBox.put(Character(
-                              name: nameController.text,
-                              system: systemController.text,
-                              rools: List<Rols>.empty(growable: true),
-                              rolsHistory:
-                                  List<RolHistory>.empty(growable: true)));
-                          Navigator.of(context).pop();
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => CharacterPage(
-                                characterKey: "key_${nameController.text}",
-                              ),
-                            ),
-                          );
-                          setState(() {});
-                        },
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.lighBlue),
-                        child: const Text("Create"),
-                      )
-                    ],
-                  )
-                ]),
-          );
-        });
-  }
 }
