@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:swipe_quest/components/app_colors.dart';
+import 'package:swipe_quest/pages/classe_page.dart';
 import 'package:swipe_quest/pages/qrcode_cam.dart';
+import 'package:swipe_quest/pages/racePage.dart';
 import 'package:swipe_quest/pages/sheets_page.dart';
 import 'package:swipe_quest/pages/signature_screen.dart';
 
@@ -172,34 +174,97 @@ class RacesPage extends StatelessWidget {
   const RacesPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        body: FutureBuilder(
-          future: fetchRaces(),
-          builder:
-              (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
-            if (snapshot.hasData) {
-              return Scaffold(
-                  backgroundColor: Color(0xFF1E1E1E),
-                  body: Center(
-                      child: SingleChildScrollView(
-                          scrollDirection: Axis.vertical,
-                          child: Column(
-                            children: snapshot.data!
-                                .map((race) => Row(
+  Widget build(BuildContext context) {
+    var rng = Random();
+
+    return Scaffold(
+      body: FutureBuilder(
+        future: fetchRaces(),
+        builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+          if (snapshot.hasData) {
+            return Scaffold(
+                backgroundColor: Color(0xFF1E1E1E),
+                body: Center(
+                    child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: Column(
+                          children: snapshot.data!
+                              .map((race) => Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
-                                      children: [Text(race["name"])],
-                                    ))
-                                .toList(),
-                          ))));
-            } else {
-              return Scaffold(
-                  backgroundColor: Color(0xFF1E1E1E),
-                  body: const Center(child: CircularProgressIndicator()));
-            }
-          },
-        ),
-      );
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        DnDRaceDetailsPage(
+                                                          className:
+                                                              race["index"],
+                                                        )));
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                color: AppColors.listColors[
+                                                    rng.nextInt(AppColors
+                                                        .listColors.length)],
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(15))),
+                                            padding: const EdgeInsets.all(12.0),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.70,
+                                                    child: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          race["name"],
+                                                          style: const TextStyle(
+                                                              fontSize: 20,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ))
+                              .toList(),
+                        ))));
+          } else {
+            return Scaffold(
+                backgroundColor: Color(0xFF1E1E1E),
+                body: const Center(child: CircularProgressIndicator()));
+          }
+        },
+      ),
+    );
+  }
 }
 
 class ClassesPage extends StatelessWidget {
@@ -227,8 +292,16 @@ class ClassesPage extends StatelessWidget {
                                           MainAxisAlignment.center,
                                       children: [
                                         GestureDetector(
-                                          onLongPress: () {},
-                                          onTap: () {},
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        DnDClassDetailsPage(
+                                                          className:
+                                                              race["index"],
+                                                        )));
+                                          },
                                           child: Container(
                                             decoration: BoxDecoration(
                                                 color: AppColors.listColors[
